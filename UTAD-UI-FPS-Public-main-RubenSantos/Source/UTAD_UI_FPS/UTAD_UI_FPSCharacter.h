@@ -19,8 +19,8 @@ class UPlayerHUD;
 
 
 
-DECLARE_DELEGATE_TwoParams(FOnHealthUpdate, int, int) //New health, Max health
-DECLARE_DELEGATE_OneParam(FOnTotalBulletChanged, int /* Total bullets*/)
+DECLARE_DELEGATE_TwoParams(FOnHealthUpdate, int, int) 
+DECLARE_DELEGATE_OneParam(FOnTotalBulletChanged, int)
 
 
 UCLASS(config = Game)
