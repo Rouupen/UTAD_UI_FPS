@@ -20,6 +20,7 @@ class UPlayerHUD;
 
 
 DECLARE_DELEGATE_TwoParams(FOnHealthUpdate, int, int) 
+DECLARE_DELEGATE(FOnPlayerShoot);
 DECLARE_DELEGATE_OneParam(FOnTotalBulletChanged, int)
 
 
@@ -65,6 +66,7 @@ protected:
 public:
 
 	FOnHealthUpdate OnHealthUpdated;
+	FOnPlayerShoot OnPlayerShoot;
 	FOnTotalBulletChanged OnTotalBulletChanged;
 
 

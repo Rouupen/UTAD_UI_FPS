@@ -24,6 +24,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UProgressBar* PlayerHealthBar;
+
+	UPROPERTY(EditAnywhere)
+	float barVelocity = 10;
+
 protected:
 
 	virtual void NativeConstruct() override;
@@ -39,10 +43,9 @@ private:
 	void LowHealthBlink(float InDeltaTime); //Need DeltaTime
 
 	FSlateColor originalColor; //Original bar color
-	FSlateColor redColor = FSlateColor(FLinearColor(1.f, 0.f, 0.f, 1.f)); //Original bar color
+	FSlateColor redColor = FSlateColor(FLinearColor::Red); //Red color
 
 	//Smooth animation
 	float currentHealthPercentage = 100;
-	float barVelocity = 10;
 	void BarSmoothAniamtion(float InDeltaTime);
 };

@@ -72,50 +72,13 @@ void AUTAD_UI_FPSCharacter::BeginPlay()
 
 
 	//Initialize UI
+	OnPlayerShoot.BindUObject(PlayerHUDInstance->CrosshairWidget, &UCrosshair::IncrementCrosshairSize);
 	OnHealthUpdated.ExecuteIfBound(Health, MaxHealth);
 
 }
 
 void AUTAD_UI_FPSCharacter::Tick(float DeltaTime)
 {
-	if (bHasRifle)
-	{
-		FVector CameraLocation = FirstPersonCameraComponent->GetComponentLocation();
-		FVector CameraForward = FirstPersonCameraComponent->GetForwardVector();
-		FVector End = CameraLocation + (CameraForward * 10000.f);
-		FHitResult OutHit;
-
-		bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, CameraLocation, End, ECC_Visibility);
-
-		if (bHit)
-		{
-			AUTAD_UI_FPS_Enemy* Enemy = Cast<AUTAD_UI_FPS_Enemy>(OutHit.GetActor());
-			if (Enemy)
-			{
-				PlayerHUDInstance->CrosshairWidget->SetCrosshairColor(true);
-			}
-			else
-			{
-				PlayerHUDInstance->CrosshairWidget->SetCrosshairColor(false);
-			}
-
-		}
-		else
-		{
-			PlayerHUDInstance->CrosshairWidget->SetCrosshairColor(false);
-		}
-		//if (!AnimationShooting)
-		//{
-		//	if (GetVelocity().Size() > 0)
-		//	{
-		//		PlayerHUDInstance->CrosshairWidget->MoveAnimation(true);
-		//	}
-		//	else
-		//	{
-		//		PlayerHUDInstance->CrosshairWidget->MoveAnimation(false);
-		//	}
-		//}
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////// Input

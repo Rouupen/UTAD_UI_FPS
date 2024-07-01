@@ -6,6 +6,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/Image.h"
 #include "Components/CanvasPanelSlot.h"
+#include <UTAD_UI_FPS/UTAD_UI_FPS_Enemy.h>
+#include "Camera/CameraComponent.h"
 
 void UCrosshair::Show()
 {
@@ -21,12 +23,8 @@ void UCrosshair::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	AUTAD_UI_FPSCharacter* character = Cast<AUTAD_UI_FPSCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	character = Cast<AUTAD_UI_FPSCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
-	if (character)
-	{
-		//character->OnWeaponAttached.BindUObject(this, &UCrosshair::ShowCrosshair);
-	}
 	canvasSlot = Cast<UCanvasPanelSlot>(Crosshair->Slot);
 	if (canvasSlot)
 	{
@@ -40,24 +38,43 @@ void UCrosshair::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	if (canvasSlot)
+	if (canvasSlot) //Size animation
 	{
-		animationOffset = FMath::Lerp(animationOffset, 1, 8  * InDeltaTime);
+		animationOffset = FMath::Lerp(animationOffset, 1, CrosshairAnimVelocity * InDeltaTime);
 		canvasSlot->SetSize(originalSize * animationOffset);
 	}
-}
 
-void UCrosshair::ShotAnimation()
-{
-	animationOffset += 0.75f;
-
-	if (animationOffset > 2)
+	//Enemy detection
+	if (character->bHasRifle) 
 	{
-		animationOffset = 2;
+		FVector StartLocation = character->GetFirstPersonCameraComponent()->GetComponentLocation();
+		FVector EndLocation = StartLocation + character->GetFirstPersonCameraComponent()->GetForwardVector() * MaxEnemyDetectionDistance;
+		FHitResult OutHit;
+
+		if (GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, ECC_Visibility))
+		{
+			AUTAD_UI_FPS_Enemy* Enemy = Cast<AUTAD_UI_FPS_Enemy>(OutHit.GetActor());
+
+			EnemyHit(Enemy != nullptr ? true : false);
+		}
+		else
+		{
+			EnemyHit(false);
+		}
 	}
 }
 
-void UCrosshair::SetCrosshairColor(bool color)
+void UCrosshair::IncrementCrosshairSize()
 {
-	Crosshair->SetBrushTintColor(color ? FLinearColor::Red : FLinearColor::Black);
+	animationOffset += AddMultSize;
+
+	if (animationOffset > MaxCrosshairMult)
+	{
+		animationOffset = MaxCrosshairMult;
+	}
+}
+
+void UCrosshair::EnemyHit(bool enemyHit)
+{
+	Crosshair->SetBrushTintColor(enemyHit ? FLinearColor::Red : FLinearColor::Black);
 }

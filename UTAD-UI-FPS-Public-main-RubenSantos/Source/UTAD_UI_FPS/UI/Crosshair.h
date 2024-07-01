@@ -10,6 +10,7 @@
  *
  */
 class UCanvasPanelSlot;
+class AUTAD_UI_FPSCharacter;
 
 UCLASS()
 class UTAD_UI_FPS_API UCrosshair : public UUserWidget
@@ -27,8 +28,19 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UImage* Crosshair;
 
-	void ShotAnimation();
-	void SetCrosshairColor(bool color);
+	UPROPERTY(EditAnywhere)
+	float MaxCrosshairMult = 2;
+
+	UPROPERTY(EditAnywhere)
+	float AddMultSize = 0.75f;
+
+	UPROPERTY(EditAnywhere)
+	float MaxEnemyDetectionDistance = 5000;
+
+	UPROPERTY(EditAnywhere)
+	float CrosshairAnimVelocity= 8;
+
+	void IncrementCrosshairSize();
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
@@ -36,8 +48,13 @@ protected:
 	
 private:
 
-
+	void EnemyHit(bool enemyHit);
 	FVector2D originalSize;
 	float animationOffset = 0;
+
+	UPROPERTY(Transient)
 	UCanvasPanelSlot* canvasSlot;
+	
+	UPROPERTY(Transient)
+	AUTAD_UI_FPSCharacter* character;
 };
