@@ -5,14 +5,21 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "UI/EnemyHealthBar.h"
 #include "Components/WidgetComponent.h"
+#include "Components/ProgressBar.h"
 
 void AUTAD_UI_FPS_Enemy::BeginPlay()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	Super::BeginPlay();
+	widgetComponent = GetComponentByClass<UWidgetComponent>();
+	enemyHealthBar = Cast<UEnemyHealthBar>(widgetComponent->GetUserWidgetObject());
+	
+	if (enemyHealthBar)
+	{
+		enemyHealthBar->UpdateEnemyHealthBarValue(Health, MaxHealth);
+	}
 }
 
 void AUTAD_UI_FPS_Enemy::Tick(float DeltaSeconds)
@@ -23,6 +30,11 @@ void AUTAD_UI_FPS_Enemy::Tick(float DeltaSeconds)
 void AUTAD_UI_FPS_Enemy::SetHealth(int NewHealth)
 {
 	Health = FMath::Clamp(NewHealth, 0, MaxHealth);
+	if (enemyHealthBar)
+	{
+		enemyHealthBar->UpdateEnemyHealthBarValue(Health, MaxHealth);
+	}
+
 	if (Health == 0)
 	{
 		Destroy();

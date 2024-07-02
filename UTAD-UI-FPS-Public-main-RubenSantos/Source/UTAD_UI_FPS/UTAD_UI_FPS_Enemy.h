@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/StaticMeshActor.h"
+#include "UI/EnemyHealthBar.h"
 #include "UTAD_UI_FPS_Enemy.generated.h"
 
 class UWidgetComponent;
@@ -47,5 +48,11 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
+private: 
 
+	UPROPERTY(Transient)
+	UWidgetComponent* widgetComponent;
+
+	UPROPERTY(Transient)
+	UEnemyHealthBar* enemyHealthBar;
 };
