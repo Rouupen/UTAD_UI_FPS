@@ -10,6 +10,7 @@ class UAmmoCounter;
 class UCrosshair;
 class UPlayerHealthBar;
 class UReloadBar;
+class UPlayerHitMarker;
 
 /**
  * 
@@ -31,6 +32,8 @@ public:
 	class UReloadBar* ReloadBarWidget;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UUserWidget* MinimapWidget;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UPlayerHitMarker* PlayerHitMarkerWidget;
 
 	/** Show the Minimap and the PlayerHealthBar */
 	UFUNCTION(BlueprintCallable, Category = Visibility)

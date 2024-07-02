@@ -5,6 +5,7 @@
 #include "Crosshair.h"
 #include "AmmoCounter.h"
 #include "PlayerHealthBar.h"
+#include "PlayerHitMarker.h"
 #include "ReloadBar.h"
 
 void UPlayerHUD::ShowNoWeapon()

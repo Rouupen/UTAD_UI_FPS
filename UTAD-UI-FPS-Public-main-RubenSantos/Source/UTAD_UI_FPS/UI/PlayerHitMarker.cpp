@@ -5,8 +5,7 @@
 
 #include "../UTAD_UI_FPSCharacter.h"
 #include "Kismet/GameplayStatics.h"
-//#include "Components/Image.h"
-//#include "Components/CanvasPanelSlot.h"
+#include "PlayerHUD.h"
 
 void UPlayerHitMarker::Show()
 {
@@ -18,32 +17,56 @@ void UPlayerHitMarker::Hide()
 	SetVisibility(ESlateVisibility::Collapsed);
 }
 
+void UPlayerHitMarker::ReceiveHit(float currentHealthPercentage)
+{
+	if (currentHealthPercentage != 1)
+	{
+		opacityPercentage = 1 - currentHealthPercentage;
+		SetRenderOpacity(opacityPercentage);
+
+		hitReceived = true;
+		startDisappear = false;
+		currentStartDisappearTime = 0;
+		currentDisappearTime = 0;
+	}
+}
+
 void UPlayerHitMarker::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	AUTAD_UI_FPSCharacter* character = Cast<AUTAD_UI_FPSCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
-	if (character)
-	{
-		//character->OnWeaponAttached.BindUObject(this, &UCrosshair::ShowCrosshair);
-	}
-	//canvasSlot = Cast<UCanvasPanelSlot>(Crosshair->Slot);
-	//if (canvasSlot)
-	//{
-	//	originalSize = canvasSlot->GetSize();
-	//}
-	//Crosshair->SetBrushTintColor(FLinearColor::Black);
-
+	character = Cast<AUTAD_UI_FPSCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	SetRenderOpacity(0);
 }
 
 void UPlayerHitMarker::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+	HitAnitmation(InDeltaTime);
+}
 
-	//if (canvasSlot)
-	//{
-	//	animationOffset = FMath::Lerp(animationOffset, 1, 8 * InDeltaTime);
-	//	canvasSlot->SetSize(originalSize * animationOffset);
-	//}
+void UPlayerHitMarker::HitAnitmation(float InDeltaTime)
+{
+	if (hitReceived && !startDisappear)
+	{
+		if (currentStartDisappearTime >= startDisappearTime)
+		{
+			startDisappear = true;
+			hitReceived = false;
+		}
+		currentStartDisappearTime += InDeltaTime;
+	}
+
+	if (startDisappear)
+	{
+		float opacity = FMath::Lerp(opacityPercentage, 0, currentDisappearTime / disappearTime);
+		currentDisappearTime += InDeltaTime;
+		SetRenderOpacity(FMath::Clamp(opacity, 0, 1));
+
+		if (opacity <= 0)
+		{
+			startDisappear = false;
+		}
+	}
 }

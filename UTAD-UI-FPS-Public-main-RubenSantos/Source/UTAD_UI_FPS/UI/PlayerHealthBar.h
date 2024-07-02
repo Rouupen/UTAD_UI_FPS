@@ -9,6 +9,7 @@
 /**
  *
  */
+class AUTAD_UI_FPSCharacter;
 UCLASS()
 class UTAD_UI_FPS_API UPlayerHealthBar : public UUserWidget
 {
@@ -28,6 +29,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	float barVelocity = 10;
 
+	float GetCurrentHealthPercentage();
+
 protected:
 
 	virtual void NativeConstruct() override;
@@ -39,6 +42,8 @@ private:
 	bool bIsLowHealth = false;
 	bool bBlinkTurningRed = true;
 	void UpdatePlayerHealthBar(int NewHealth, int MaxHealth);
+
+	AUTAD_UI_FPSCharacter* character;
 
 	void LowHealthBlink(float InDeltaTime); //Need DeltaTime
 

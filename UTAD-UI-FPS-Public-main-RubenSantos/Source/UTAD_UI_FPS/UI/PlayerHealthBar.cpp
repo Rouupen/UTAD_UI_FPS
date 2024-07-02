@@ -7,6 +7,9 @@
 #include "Components/ProgressBar.h"
 #include "Math/Color.h"
 #include "Styling/SlateColor.h"
+#include "PlayerHitMarker.h"
+#include "PlayerHUD.h"
+
 
 #define BLINK_ANIMATION_TIME 1.f
 #define BLINK_THRESHOLD 0.25f
@@ -21,13 +24,18 @@ void UPlayerHealthBar::Hide()
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
+float UPlayerHealthBar::GetCurrentHealthPercentage()
+{
+	return currentHealthPercentage;
+}
+
 void UPlayerHealthBar::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	originalColor = PlayerHealthBar->GetWidgetStyle().FillImage.TintColor; //Save original color
 
-	AUTAD_UI_FPSCharacter* character = Cast<AUTAD_UI_FPSCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	character = Cast<AUTAD_UI_FPSCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 	if (character)
 	{
@@ -46,6 +54,8 @@ void UPlayerHealthBar::UpdatePlayerHealthBar(int NewHealth, int MaxHealth)
 	currentHealthPercentage = static_cast<float>(NewHealth) / static_cast<float>(MaxHealth);
 
 	bIsLowHealth = currentHealthPercentage <= BLINK_THRESHOLD ? true : false;
+
+	character->GetPlayerHUDInstance()->PlayerHitMarkerWidget->ReceiveHit(currentHealthPercentage);
 
 	if (!bIsLowHealth)
 	{

@@ -9,6 +9,8 @@
 /**
  * 
  */
+
+class AUTAD_UI_FPSCharacter;
 UCLASS()
 class UTAD_UI_FPS_API UPlayerHitMarker : public UUserWidget
 {
@@ -20,8 +22,31 @@ class UTAD_UI_FPS_API UPlayerHitMarker : public UUserWidget
 	UFUNCTION(BlueprintCallable, Category = Visibility)
 	void Hide();
 
+public:
+	UPROPERTY(EditAnywhere)
+	float startDisappearTime = 1;
+
+	UPROPERTY(EditAnywhere)
+	float disappearTime = 1;
+
+	void ReceiveHit(float currentHealthPercentage);
+
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+private:
+
+	void HitAnitmation(float InDeltaTime);
+
+	UPROPERTY(Transient)
+	AUTAD_UI_FPSCharacter* character;
+
+	float opacityPercentage;
+
+	bool hitReceived;
+	float currentStartDisappearTime;
+	bool startDisappear;
+	float currentDisappearTime;
 
 };
