@@ -30,6 +30,8 @@ void UTP_WeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	if (bIsReloading)
 	{
 		ReloadTimer += DeltaTime;
+
+		OnReloadValue.ExecuteIfBound(ReloadTimer);
 		// To test ReloadTimer
 		// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%f"), ReloadTimer));
 	}
@@ -124,6 +126,7 @@ void UTP_WeaponComponent::CompleteReload()
 	playerBullets += CurrentNumBullets;
 
 	CurrentNumBullets = __min(MagazineSize, playerBullets);
+	OnReloadValue.ExecuteIfBound(0);
 
 	Character->SetTotalBullets(playerBullets - CurrentNumBullets);
 	OnBulletsChanged.ExecuteIfBound(Character->TotalBullets, CurrentNumBullets);
@@ -135,7 +138,7 @@ void UTP_WeaponComponent::CancelReload()
 	{
 		return;
 	}
-
+	OnReloadValue.ExecuteIfBound(0);
 	bIsReloading = false;
 }
 

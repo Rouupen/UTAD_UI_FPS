@@ -16,6 +16,7 @@
 #include "UI/PlayerHUD.h"
 #include "UI/Crosshair.h"
 #include "UI/AmmoCounter.h"
+#include "UI/ReloadBar.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AUTAD_UI_FPSCharacter
@@ -161,10 +162,12 @@ void AUTAD_UI_FPSCharacter::SetHasRifle(bool bNewHasRifle)
 	if (bHasRifle)
 	{
 		PlayerHUDInstance->AmmoCounterWidget->Show();
+		PlayerHUDInstance->ReloadBarWidget->Show();
 	}
 	else
 	{
 		PlayerHUDInstance->AmmoCounterWidget->Hide();
+		PlayerHUDInstance->ReloadBarWidget->Hide();
 	}
 	PlayerHUDInstance->ShowAll();
 }

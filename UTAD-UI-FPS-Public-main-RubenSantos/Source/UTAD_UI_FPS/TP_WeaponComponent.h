@@ -10,7 +10,7 @@ class AUTAD_UI_FPSCharacter;
 
 
 DECLARE_DELEGATE_TwoParams(FOnBulletsChanged, int, int)
-//DECLARE_DELEGATE_OneParam(FOnReload, float /* reloadProgress */)
+DECLARE_DELEGATE_OneParam(FOnReloadValue, float)
 
 
 
@@ -98,7 +98,7 @@ public:
 	void SetCurrentNumBullets(int NewCurrentNumBullets);
 
 	FOnBulletsChanged OnBulletsChanged;
-	//FOnReload OnReload;
+	FOnReloadValue OnReloadValue;
 
 
 protected:
