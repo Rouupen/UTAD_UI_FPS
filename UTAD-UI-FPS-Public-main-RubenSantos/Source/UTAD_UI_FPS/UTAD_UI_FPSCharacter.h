@@ -21,8 +21,6 @@ class UPlayerHUD;
 
 DECLARE_DELEGATE_TwoParams(FOnHealthUpdate, int, int) 
 DECLARE_DELEGATE(FOnPlayerShoot);
-DECLARE_DELEGATE_OneParam(FOnTotalBulletChanged, int)
-
 
 UCLASS(config = Game)
 class AUTAD_UI_FPSCharacter : public ACharacter
@@ -67,9 +65,6 @@ public:
 
 	FOnHealthUpdate OnHealthUpdated;
 	FOnPlayerShoot OnPlayerShoot;
-	FOnTotalBulletChanged OnTotalBulletChanged;
-
-
 
 	UPlayerHUD* GetPlayerHUDInstance() const { return PlayerHUDInstance; }
 

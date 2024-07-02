@@ -8,38 +8,39 @@
 
 void UAmmoCounter::Show()
 {
-	AUTAD_UI_FPSCharacter* Character = Cast<AUTAD_UI_FPSCharacter>(GetOwningPlayer()->GetCharacter());
-	if (Character)
+	if (character)
 	{
-		Character->OnTotalBulletChanged.BindUObject(this, &UAmmoCounter::UpdateTotalAmmo);
-		weaponComponent = Character->GetAttachedWeaponComponent();
-		weaponComponent->OnCurrentNumBulletsChanged.BindUObject(this, &UAmmoCounter::UpdateCurrentAmmo);
+		if (character->GetAttachedWeaponComponent())
+		{
+			character->GetAttachedWeaponComponent()->OnBulletsChanged.BindUObject(this, &UAmmoCounter::UpdateCurrentAmmo);
+		}
 	}
+	
 	SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 
 void UAmmoCounter::Hide()
 {
-	AUTAD_UI_FPSCharacter* Character = Cast<AUTAD_UI_FPSCharacter>(GetOwningPlayer()->GetCharacter());
-	if (Character)
+	if (character)
 	{
-		Character->OnTotalBulletChanged.Unbind();
-		if (weaponComponent)
+		if (character->GetAttachedWeaponComponent())
 		{
-			weaponComponent->OnCurrentNumBulletsChanged.Unbind();
+			character->GetAttachedWeaponComponent()->OnBulletsChanged.Unbind();
 		}
 	}
+
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UAmmoCounter::UpdateCurrentAmmo(int NewCurrentAmmo)
+void UAmmoCounter::NativeConstruct()
 {
-	CurrentAmmo->SetText(FText::FromString(FString::Printf(TEXT("%d"), NewCurrentAmmo)));
-
+	Super::NativeConstruct();
+	character = Cast<AUTAD_UI_FPSCharacter>(GetOwningPlayer()->GetCharacter());
+	Hide();
 }
 
-void UAmmoCounter::UpdateTotalAmmo(int NewTotalAmmo)
+void UAmmoCounter::UpdateCurrentAmmo(int totalAmmo, int currentAmmo)
 {
-	TotalAmmo->SetText(FText::FromString(FString::Printf(TEXT("%d"), NewTotalAmmo)));
-
+	TotalAmmo->SetText(FText::FromString(FString::Printf(TEXT("%d"), totalAmmo)));
+	CurrentAmmo->SetText(FText::FromString(FString::Printf(TEXT("%d"), currentAmmo)));
 }

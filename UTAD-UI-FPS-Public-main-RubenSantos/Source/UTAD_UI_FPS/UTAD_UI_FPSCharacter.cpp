@@ -15,6 +15,8 @@
 #include "Blueprint/UserWidget.h"
 #include "UI/PlayerHUD.h"
 #include "UI/Crosshair.h"
+#include "UI/AmmoCounter.h"
+
 //////////////////////////////////////////////////////////////////////////
 // AUTAD_UI_FPSCharacter
 
@@ -156,6 +158,14 @@ int AUTAD_UI_FPSCharacter::GetMaxHealth()
 void AUTAD_UI_FPSCharacter::SetHasRifle(bool bNewHasRifle)
 {
 	bHasRifle = bNewHasRifle;
+	if (bHasRifle)
+	{
+		PlayerHUDInstance->AmmoCounterWidget->Show();
+	}
+	else
+	{
+		PlayerHUDInstance->AmmoCounterWidget->Hide();
+	}
 	PlayerHUDInstance->ShowAll();
 }
 

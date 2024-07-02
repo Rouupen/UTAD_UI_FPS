@@ -10,30 +10,32 @@
  * 
  */
 
-class UTP_WeaponComponent;
+class AUTAD_UI_FPSCharacter;
 
 UCLASS()
 class UTAD_UI_FPS_API UAmmoCounter : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* CurrentAmmo;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* TotalAmmo;
-
 	UFUNCTION(BlueprintCallable, Category = Visibility)
 	void Show();
 
 	UFUNCTION(BlueprintCallable, Category = Visibility)
 	void Hide();
+	
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* CurrentAmmo;
+	
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* TotalAmmo;
+
+protected:
+	virtual void NativeConstruct() override;
 
 private:
+	void UpdateCurrentAmmo(int TotalAmmo, int CurrentAmmo);
 
-	void UpdateCurrentAmmo(int NewCurrentAmmo);
-
-	void UpdateTotalAmmo(int NewTotalAmmo);
-	UTP_WeaponComponent* weaponComponent;
-
+	UPROPERTY(Transient)
+	AUTAD_UI_FPSCharacter* character;
 };

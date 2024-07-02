@@ -66,7 +66,6 @@ void UTP_WeaponComponent::Fire()
 			World->SpawnActor<AUTAD_UI_FPSProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 
 			Character->OnPlayerShoot.ExecuteIfBound();
-
 		}
 	}
 	
@@ -88,6 +87,9 @@ void UTP_WeaponComponent::Fire()
 	}
 
 	--CurrentNumBullets;
+
+	OnBulletsChanged.ExecuteIfBound(Character->TotalBullets, CurrentNumBullets);
+
 }
 
 void UTP_WeaponComponent::StartReload()
@@ -124,6 +126,7 @@ void UTP_WeaponComponent::CompleteReload()
 	CurrentNumBullets = __min(MagazineSize, playerBullets);
 
 	Character->SetTotalBullets(playerBullets - CurrentNumBullets);
+	OnBulletsChanged.ExecuteIfBound(Character->TotalBullets, CurrentNumBullets);
 }
 
 void UTP_WeaponComponent::CancelReload()
@@ -154,6 +157,7 @@ int UTP_WeaponComponent::GetCurrentNumBullets()
 void UTP_WeaponComponent::SetCurrentNumBullets(int NewCurrentNumBullets)
 {
 	CurrentNumBullets = NewCurrentNumBullets;
+	OnBulletsChanged.ExecuteIfBound(Character->TotalBullets, CurrentNumBullets);
 }
 
 void UTP_WeaponComponent::AttachWeapon(AUTAD_UI_FPSCharacter* TargetCharacter)
@@ -172,6 +176,8 @@ void UTP_WeaponComponent::AttachWeapon(AUTAD_UI_FPSCharacter* TargetCharacter)
 	
 	// switch bHasRifle so the animation blueprint can switch to another animation set
 	Character->SetHasRifle(true);
+	OnBulletsChanged.ExecuteIfBound(Character->TotalBullets, CurrentNumBullets);
+
 
 	// Set up action bindings
 	if (APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))

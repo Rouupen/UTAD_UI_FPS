@@ -9,8 +9,8 @@
 class AUTAD_UI_FPSCharacter;
 
 
-DECLARE_DELEGATE_OneParam(FOnCurrentNumBulletsChanged, int /* currentNumBullets */)
-DECLARE_DELEGATE_OneParam(FOnReload, float /* reloadProgress */)
+DECLARE_DELEGATE_TwoParams(FOnBulletsChanged, int, int)
+//DECLARE_DELEGATE_OneParam(FOnReload, float /* reloadProgress */)
 
 
 
@@ -97,8 +97,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SetCurrentNumBullets(int NewCurrentNumBullets);
 
-	FOnCurrentNumBulletsChanged OnCurrentNumBulletsChanged;
-	FOnReload OnReload;
+	FOnBulletsChanged OnBulletsChanged;
+	//FOnReload OnReload;
 
 
 protected:
