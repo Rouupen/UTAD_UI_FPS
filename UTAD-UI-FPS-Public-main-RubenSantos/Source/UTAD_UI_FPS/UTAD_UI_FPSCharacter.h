@@ -16,6 +16,7 @@ class UTP_WeaponComponent;
 struct FInputActionValue;
 
 class UPlayerHUD;
+class UEnhancedInputComponent;
 
 
 
@@ -50,6 +51,10 @@ class AUTAD_UI_FPSCharacter : public ACharacter
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* SkillMenuAction;
 
 
 public:
@@ -146,7 +151,7 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
-
+	UEnhancedInputComponent* enhancedInputComponent;
 public:
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }

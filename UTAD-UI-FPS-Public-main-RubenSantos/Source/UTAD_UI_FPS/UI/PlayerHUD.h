@@ -12,6 +12,7 @@ class UPlayerHealthBar;
 class UReloadBar;
 class UPlayerHitMarker;
 class USplashScreen;
+class USplashScreen;
 
 /**
  * 
@@ -37,6 +38,8 @@ public:
 	class UPlayerHitMarker* PlayerHitMarkerWidget;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class USplashScreen* SplashScreen;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class USkillTree* SkillTree;
 
 	/** Show the Minimap and the PlayerHealthBar */
 	UFUNCTION(BlueprintCallable, Category = Visibility)

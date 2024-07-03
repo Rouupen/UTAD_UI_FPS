@@ -17,6 +17,7 @@
 #include "UI/Crosshair.h"
 #include "UI/AmmoCounter.h"
 #include "UI/ReloadBar.h"
+#include "UI/SkillTree.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AUTAD_UI_FPSCharacter
@@ -78,6 +79,11 @@ void AUTAD_UI_FPSCharacter::BeginPlay()
 	OnPlayerShoot.BindUObject(PlayerHUDInstance->CrosshairWidget, &UCrosshair::IncrementCrosshairSize);
 	OnHealthUpdated.ExecuteIfBound(Health, MaxHealth);
 
+	if (enhancedInputComponent)
+	{
+		//SkillMenu
+		enhancedInputComponent->BindAction(SkillMenuAction, ETriggerEvent::Started, PlayerHUDInstance->SkillTree, &USkillTree::SwitchMenu);
+	}
 }
 
 void AUTAD_UI_FPSCharacter::Tick(float DeltaTime)
@@ -89,17 +95,19 @@ void AUTAD_UI_FPSCharacter::Tick(float DeltaTime)
 void AUTAD_UI_FPSCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	enhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	if (enhancedInputComponent)
 	{
 		//Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		enhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		enhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		//Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AUTAD_UI_FPSCharacter::Move);
+		enhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AUTAD_UI_FPSCharacter::Move);
 
 		//Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUTAD_UI_FPSCharacter::Look);
+		enhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUTAD_UI_FPSCharacter::Look);
+
 	}
 }
 
