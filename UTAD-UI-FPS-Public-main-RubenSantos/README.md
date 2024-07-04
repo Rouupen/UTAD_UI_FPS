@@ -22,7 +22,7 @@ He creado una nueva clase llamada PlayerHitMarker y un widget asociado a ella. D
 
 ----Pantalla splash----
 
-He implementado esta pantalla de forma muy similar al marcador de daño en pantalla. He creado una clase llama SplashScreen y lo he asociado a un widget. Luego, he reutilizado la animación de desaparición que tenía hecha para el daño en pantalla para que desaparezca y la llamo nada más empezar el juego.
+He implementado esta pantalla de forma muy similar al marcador de daño en pantalla. He creado una clase llamada SplashScreen y lo he asociado a un widget. Luego, he reutilizado la animación de desaparición que tenía hecha para el daño en pantalla para que desaparezca y la llamo nada más empezar el juego.
 
 
 ----Árbol de habilidades/mejoras----
