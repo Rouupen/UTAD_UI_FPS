@@ -9,9 +9,32 @@
 /**
  * 
  */
+class USkillTree;
 UCLASS()
 class UTAD_UI_FPS_API UUnlockSkillPopUp : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UFUNCTION(BlueprintCallable, Category = Visibility)
+	void Show();
+
+	UFUNCTION(BlueprintCallable, Category = Visibility)
+	void Hide();
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UButton* UnlockButton;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UButton* CancelButton;
+
+	UFUNCTION()
+	void SetSkillTree(USkillTree* instance);
+protected:
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void UnlockSkill();
+
+	USkillTree* skillTreeInstance;
 };

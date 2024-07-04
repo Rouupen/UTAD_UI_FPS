@@ -14,8 +14,18 @@ void USkillButton::SkillClick()
 
 void USkillButton::Initialize(USkillTree* instance)
 {
+	skillTreeInstance = instance;
 	this->OnClicked.AddDynamic(this, &USkillButton::SkillClick);
 
-	skillTreeInstance = instance;
 
+}
+
+bool USkillButton::IsUnlocked()
+{
+	return unlocked;
+}
+
+void USkillButton::SetUnlocked(bool Unlocked)
+{
+	unlocked = Unlocked;
 }

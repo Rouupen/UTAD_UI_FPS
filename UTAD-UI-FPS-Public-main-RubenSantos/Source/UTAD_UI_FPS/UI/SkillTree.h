@@ -12,6 +12,10 @@
  *
  */
 
+class UUnlockSkillPopUp;
+class UCantUnlockSkillPopUp;
+class UTextBlock;
+
 UCLASS()
 class UTAD_UI_FPS_API USkillTree : public UUserWidget
 {
@@ -54,8 +58,21 @@ public:
 	UFUNCTION()
 	void TryUnlockSkill(int cost, USkillButton* button);
 
+	UFUNCTION()
+	void UnlockSkill();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Points = 3;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UUnlockSkillPopUp* unlockSkillPopUp;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UCantUnlockSkillPopUp* cantUnlockSkillPopUp;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* TotalPoints;
+
 private:
 	UPROPERTY(Transient)
 	TArray<USkillButton*> speedButtons;
@@ -66,4 +83,6 @@ private:
 	UPROPERTY(Transient)
 	TArray<USkillButton*> healthButtons;
 
+	USkillButton* currentSkillButton;
+	int currentCost;
 };
